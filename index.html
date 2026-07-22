@@ -1,1050 +1,243 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>City Campus — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--glass:rgba(255,255,255,.08);--gb:rgba(255,255,255,.12);--gh:rgba(255,255,255,.15);--text:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.32);--font:'DM Sans',sans-serif;--r:18px;--blur:24px}
-html,body{overflow-x:hidden}
-body{font-family:var(--font);color:var(--text);min-height:100vh;position:relative;
-  background:
-    radial-gradient(ellipse 80% 60% at 80% 10%,rgba(180,200,170,.28) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 50% at 10% 25%,rgba(120,160,140,.22) 0%,transparent 60%),
-    radial-gradient(ellipse 90% 70% at 50% 90%,rgba(40,70,90,.55) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 70%,rgba(70,110,100,.35) 0%,transparent 55%),
-    radial-gradient(ellipse 70% 60% at 25% 75%,rgba(50,80,95,.45) 0%,transparent 55%),
-    linear-gradient(170deg,#5d7068 0%,#475a58 18%,#374a52 38%,#2c3e4c 58%,#283645 78%,#202d3a 100%);
-  background-attachment:fixed}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(circle at 18% 38%,rgba(160,200,170,.18) 0%,transparent 14%),
-    radial-gradient(circle at 78% 62%,rgba(100,150,180,.16) 0%,transparent 16%),
-    radial-gradient(circle at 42% 82%,rgba(80,120,140,.18) 0%,transparent 18%);
-  filter:blur(40px)}
-.layout{position:relative;z-index:1}
-.layout{display:flex;min-height:100vh}
+✕
+City Campus
+DASHBOARD
+OVERVIEW
+◉
+Tutto
+⏱
+Countdown
+▦
+Calendario
+☑
+To-do
+CONTENUTI
+▤
+Cal. editoriale
+▹
+Content Bank
+◧
+Rubriche
+◈
+Aree tematiche
+◎
+Real Talk
+▤
+Performance
+PROGETTO
+▥
+Roadmap
+▧
+Mesi
+CALENDARIO EDITORIALE
+Febbraio
+8
+Marzo
+6
+Aprile
+7
+Maggio
+0
+Giugno
+0
+Luglio
+0
+Agosto
+0
+SG
+Sendy Gonzalez
+Digital Marketing
+Dashboard
+—
++ Evento
++ To-do
+Esporta PDF
+↺ Reset
+⚠ POST DA RECUPERARE ENTRO LUGLIO
+Target 8/mese · Feb–Lug = 48 attesi · 29 pubblicati
+19
+PUBBLICATI TOTALE
+29
+Feb–Lug 2026
+VISITE GUIDATE
+Attive
+Gio 14:30–18:00 · Sab 9:30–12:30
+LUGLIO · IN CORSO
+5
+Recuperabile Cibo · 27/07
+AGOSTO · PIANIFICATO
+6
+RT Virginia + Bolcato · 2 aree recup.
 
-/* SIDEBAR */
-.sb{width:200px;background:rgba(0,0,0,.3);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-right:1px solid rgba(255,255,255,.05);padding:18px 12px;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:30;overflow-y:auto;scrollbar-width:none;transition:transform .3s ease}
-.sb::-webkit-scrollbar{width:0}
-.sb.hidden{transform:translateX(-200px)}
-.sb-toggle{position:fixed;top:12px;left:12px;z-index:25;width:34px;height:34px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.1);color:var(--text);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:.2s}
-.sb-toggle:hover{background:rgba(0,0,0,.6)}
-.sb-toggle.show{display:flex}
-.sb-close{position:absolute;top:12px;right:10px;width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.06);border:none;color:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:.15s}
-.sb-close:hover{background:rgba(255,255,255,.12);color:#FFF}
-.sb-brand{font-size:16px;font-weight:600;letter-spacing:-.3px;margin-bottom:2px}
-.sb-sub{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:22px;font-weight:300}
-.sb-g{font-size:7px;text-transform:uppercase;letter-spacing:2px;color:var(--t3);margin:14px 0 5px;padding-left:8px;font-weight:500}
-.sb-i{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:10px;font-size:11px;font-weight:400;color:var(--t2);cursor:pointer;transition:.2s;margin-bottom:1px}
-.sb-i:hover{background:rgba(255,255,255,.08);color:var(--text)}
-.sb-i.on{background:rgba(255,255,255,.13);color:var(--text);font-weight:500}
-.sb-ic{font-size:12px;width:16px;text-align:center;opacity:.6}
-.sc{margin-top:4px;padding:7px 8px;background:rgba(255,255,255,.04);border-radius:9px;margin-bottom:4px;border:1px solid rgba(255,255,255,.04)}
-.sc-t{font-size:9px;font-weight:500;margin-bottom:4px;color:var(--t2);display:flex;justify-content:space-between}
-.sc-tn{color:var(--t3);font-weight:400}
-.sc-g{display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px}
-.sc-d{width:100%;aspect-ratio:1;border-radius:50%}
-.sc-d.e{background:transparent}.sc-d.o{background:rgba(255,255,255,.06)}.sc-d.p{background:#FF6B35}
-.sb-f{margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
 
-/* MAIN */
-.mn{flex:1;margin-left:200px;padding:20px 22px;scroll-behavior:smooth;transition:margin-left .3s;width:100%;min-width:0}
-.mn.full{margin-left:0}
+COUNTDOWN
+0/0
+—
+GIORNI ALLA PROSSIMA VISITA
 
-.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
-.hd-l{display:flex;align-items:center;gap:10px}
-.hd h1{font-size:22px;font-weight:600;letter-spacing:-.4px}
-.hd-d{font-size:10px;color:var(--t2);margin-top:2px;font-weight:300}
-.hd-r{display:flex;gap:5px;flex-wrap:wrap}
-.btn{padding:6px 13px;border-radius:10px;font-size:10px;font-family:var(--font);cursor:pointer;border:1px solid var(--gb);background:var(--glass);color:var(--text);font-weight:400;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:.2s;white-space:nowrap}
-.btn:hover{background:var(--gh)}
-.btn.warn{border-color:rgba(239,68,68,.3);color:#FCA5A5}
-.btn.warn:hover{background:rgba(239,68,68,.12)}
++ Aggiungi scadenza
+Weekly
+Monthly
+0 eventi
+‹
+Giugno 2026
+› Oggi
++ CODA MAG
++ Aggiungi evento
+TO-DO
+0/0
+0%
+completato
 
-.w{background:var(--glass);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));border:1px solid var(--gb);border-radius:var(--r);padding:16px;transition:opacity .4s,transform .4s}
-.w.dim{opacity:.12;transform:scale(.97);pointer-events:none}
-.wt{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--t2);margin-bottom:11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.wb{font-size:8px;padding:3px 7px;border-radius:7px;font-weight:500;background:rgba(255,255,255,.1);color:var(--t2);border:1px solid rgba(255,255,255,.06);white-space:nowrap}
 
-.row{display:grid;gap:10px;margin-bottom:10px}
-.r4{grid-template-columns:repeat(4,1fr)}.r2{grid-template-columns:1fr 1fr}.r1{grid-template-columns:1fr}
-.r3c{grid-template-columns:1.1fr 2fr 2fr}
++ Aggiungi attività
+02
+Calendario Editoriale — Giugno 2026
+—
+‹ Oggi ›
 
-/* STATS */
-.sv{font-size:30px;font-weight:300;letter-spacing:-1px;line-height:1}
-.sl{font-size:8px;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);font-weight:500;margin-bottom:5px}
-.ss{font-size:9px;color:var(--t2);margin-top:4px;font-weight:300}
+RUBRICHE
+5 RUBRICHE · AL 19 GIUGNO 2026
+Why We Do It
+3/6 · 3 recuperabili (27/07,10/08,24/08)
+50%
 
-/* COUNTDOWN */
-.cd{position:relative;overflow:hidden;background:rgba(0,0,0,.25);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
-.gl{position:absolute;width:120px;height:120px;border-radius:50%;filter:blur(50px);opacity:.35;pointer-events:none}
-.g1{background:#FF6B35;top:-30px;right:-20px}.g2{background:#3B82F6;bottom:-30px;left:10%}
-.cd-n{font-size:54px;font-weight:300;line-height:1;position:relative;z-index:1;letter-spacing:-2px}
-.cd-l{font-size:10px;color:var(--t2);margin-top:3px;position:relative;z-index:1;font-weight:300;text-transform:uppercase;letter-spacing:1.5px}
-.cd-evs{margin-top:14px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
-.cd-ev{display:flex;align-items:center;gap:7px;padding:5px 18px 5px 0;font-size:9.5px;color:var(--t2);font-weight:300;position:relative}
-.cd-ev .cd-tx{flex:1;cursor:pointer}
-.cd-ev:hover .del-x{opacity:1}
-.cd-ck{width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;cursor:pointer;background:transparent}
-.cd-ck.dn{background:#22C55E;border-color:#22C55E}
-.cd-ck.dn::after{content:'✓';font-size:7px;font-weight:700;color:#fff}
-.cd-ev.dn .cd-tx{text-decoration:line-through;color:var(--t3)}
+Real Talk
+2 pub. su 11 · Virginia 4–5 Ago
+20%
 
-.del-x{position:absolute;right:0;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:rgba(239,68,68,.3);border:none;color:#FFF;font-size:9px;cursor:pointer;opacity:0;transition:.15s;display:flex;align-items:center;justify-content:center;font-family:var(--font);line-height:1;padding:0}
-.del-x:hover{background:rgba(239,68,68,.6)}
+Work in Progress
+Cantiere e visite in produzione
+70%
 
-/* CALENDAR */
-.cm{font-size:24px;font-weight:600;letter-spacing:-.5px}
-.cy{font-size:13px;color:var(--t3);font-weight:300}
-.cv-tog{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:99px;padding:3px;gap:2px}
-.cv-tog button{background:transparent;border:none;color:var(--t2);font-family:var(--font);font-size:9px;font-weight:500;padding:5px 12px;border-radius:99px;cursor:pointer;transition:.2s;letter-spacing:.3px}
-.cv-tog button.on{background:#fff;color:#1a2230;font-weight:600}
-.cv-tog button:hover:not(.on){color:var(--text)}
+Local Vibes
+Debutto da programmare
+0%
 
-.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
-.cdl{font-size:9px;color:var(--t3);font-weight:400;padding:6px 0;letter-spacing:1px;text-transform:uppercase}
-.cc{min-height:50px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;padding:4px 2px;font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:.2s;position:relative}
-.cc:hover{background:rgba(255,255,255,.06)}
-.cc-num{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:12px;font-weight:500;line-height:1;flex-shrink:0}
-.cc.td .cc-num{background:#fff;color:#1a2230;font-weight:700}
-.cc.has-badge .cc-num{color:#fff;font-weight:700}
-.cc.has-badge.bg-pink   .cc-num{background:#EC4899}
-.cc.has-badge.bg-blue   .cc-num{background:#3B82F6}
-.cc.has-badge.bg-orange .cc-num{background:#FF6B35}
-.cc.has-badge.bg-green  .cc-num{background:#22C55E}
-.cc.has-badge.bg-purple .cc-num{background:#8B5CF6}
-.cc.has-badge.bg-yellow .cc-num{background:#F0C808;color:#1a2230}
-.cc.has-badge.bg-red    .cc-num{background:#EF4444}
-.cc-line{height:2px;width:60%;border-radius:2px;background:var(--cl,transparent)}
-.cc-line.cl-blue{background:#3B82F6}.cc-line.cl-orange{background:#FF6B35}
-.cc-line.cl-green{background:#22C55E}.cc-line.cl-purple{background:#8B5CF6}
-.cc-line.cl-pink{background:#EC4899}.cc-line.cl-yellow{background:#F0C808}.cc-line.cl-red{background:#EF4444}
-.cc-lbl{font-size:7px;color:var(--t2);line-height:1.15;font-weight:400;text-align:center;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;padding:0 1px;letter-spacing:.1px}
-.cc.has-badge .cc-lbl{color:var(--text);font-weight:500}
-.cc.em{color:transparent;pointer-events:none;visibility:hidden}
+Save Your Spot
+Attiva dal 30/06 · visite guidate
+30%
 
-/* WEEKLY VIEW */
-.cw-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:6px}
-.cw-day{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 2px;border-radius:12px;cursor:pointer;transition:.2s;background:rgba(255,255,255,.03);border:1px solid transparent;min-height:78px}
-.cw-day:hover{background:rgba(255,255,255,.07)}
-.cw-day.td{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
-.cw-day-dn{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px}
-.cw-day-num{font-size:18px;font-weight:600;letter-spacing:-.5px}
-.cw-day.td .cw-day-num{color:#fff}
-.cw-day-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);margin-top:2px}
-.cw-day.has-ev .cw-day-dot{background:#FF6B35}
-.cw-bigday{display:grid;grid-template-columns:auto 1fr;align-items:end;gap:14px;padding:6px 2px 14px}
-.cw-bigday-m{font-size:34px;font-weight:600;letter-spacing:-1px;line-height:1}
-.cw-bigday-d{font-size:34px;font-weight:600;letter-spacing:-1px;line-height:1;text-align:right;color:var(--text)}
-.cw-events{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
-.cw-ev-row{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:10px;color:var(--t2);position:relative;padding-right:20px}
-.cw-ev-row:hover .del-x{opacity:1}
-.cw-ev-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.cw-empty{font-size:10px;color:var(--t3);padding:8px 0;text-align:center;font-style:italic}
-.ca{margin-top:7px;font-size:9px;color:var(--t3);cursor:pointer;text-align:center;padding:5px;border-radius:7px;border:1px dashed rgba(255,255,255,.08);transition:.2s}
-.ca:hover{background:rgba(255,255,255,.05);color:var(--t2)}
+AREE TEMATICHE · FAIR LIVING
+3/6 PUBBLICATE · 3 RECUPERABILI
+Ospitalità
+Pubblicato
+Carosello: spazi comuni, corte giardino, aree studio
+Reel WIP: foto interni
+Energia
+Pubblicato
+Carosello: classe A3, geotermico, nZEB
+Real Talk: Doriano (collegamento)
+Finanza
+Pubblicato
+"Da dove vengono le risorse"
+Crowdinvesting · 194 soci
+Cibo
+🟣 Recuperabile · Lun 27 Lug
+Bottega km zero, filiera equa
+Produttori locali · Why We Do It
+Mobilità
+🟣 Recuperabile · Lun 10 Ago
+Ciclofficina, bike sharing
+Connessioni urbane sostenibili
+Cultura
+🟣 Recuperabile · Lun 24 Ago
+Eventi, laboratori, spazi aperti
+Sesta area · Why We Do It
+REAL TALK
+2 PUBBLICATI · POOL 11
+DS
+Doriano Stevanon
+Coordinatore · Energia
+PUBBLICATO
+SC
+Stefano Carraro · Gips
+Fornitore · Materiali
+PUBBLICATO
+VS
+Virginia · Spazio Agorà
+Progettista · 4–5 Ago
+PRONTO · DA PUB.
+NB
+Nicola Bolcato · Agendo
+Partner · Cultura · 17–19 Ago
+PRONTO · DA PUB.
+AP
+Andrea · Pavimenti
+Fornitore materiali · Settembre
+DA SVILUPPARE
+LE
+Luigi · Elettrosystem
+Fornitore tecnico · Post-apertura
+DA SVILUPPARE
+AS
+Alberto Saccozza
+Ingegnere · Post-apertura
+DA SVILUPPARE
+AB
+Abaz
+Da schedulare · Post-apertura
+DA SCHED.
+MI
+Michelotti
+Da schedulare · Post-apertura
+DA SCHED.
+CDA
+CDA · Urbana Cooperativa
+Da schedulare · Post-apertura
+DA SCHED.
+TM
+Tommy + Massi
+Co-fondatori · a campus aperto
+PIÙ AVANTI
+ROADMAP 2026
+GEN → AGO
 
-.ev-popup{display:none;position:absolute;background:rgba(20,25,35,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;z-index:50;min-width:200px;max-width:240px;font-size:10px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
-.ev-popup.show{display:block}
-.ev-popup h4{font-size:12px;font-weight:500;margin-bottom:8px}
-.ev-popup-item{padding:5px 0;color:var(--t2);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:10px}
-.ev-popup-item .px{position:static;transform:none;opacity:1}
+GEN
+FEB
+MAR
+APR
+MAG
+GIU
+LUG
+AGO
 
-/* TODO */
-.tb{background:rgba(0,0,0,.2);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);display:flex;flex-direction:column}
-.tp{font-size:30px;font-weight:300;letter-spacing:-1px;line-height:1}
-.tps{font-size:9px;color:var(--t3);font-weight:300}
-.tbar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:6px}
-.tbf{height:100%;border-radius:2px;background:linear-gradient(90deg,#FF6B35,#F0C808);transition:width .4s}
-#tL{margin-top:8px;flex:1;overflow-y:auto;max-height:340px;scrollbar-width:thin}
-#tL::-webkit-scrollbar{width:4px}
-#tL::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
-.ti{display:flex;align-items:center;gap:8px;padding:9px 32px 9px 12px;margin:3px 0;background:rgba(255,255,255,.06);border-radius:11px;border:1px solid rgba(255,255,255,.04);position:relative;transition:.2s}
-.ti:hover{background:rgba(255,255,255,.1)}
-.ti:hover .del-x{opacity:1}
-.tc{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.2s;cursor:pointer;background:transparent}
-.tc.dn{background:#22C55E;border-color:#22C55E}
-.tc.dn::after{content:'✓';font-size:8px;color:#FFF;font-weight:700}
-.tl{font-size:10px;font-weight:400;color:var(--text);flex:1;transition:.2s;line-height:1.3}
-.tl.sk{text-decoration:line-through;color:var(--t3)}
-.pri{font-size:7px;padding:2px 5px;border-radius:4px;font-weight:600;margin-left:4px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase}
-.pri-h{background:rgba(239,68,68,.25);color:#FCA5A5}
-.pri-m{background:rgba(245,158,11,.25);color:#FDE68A}
-.pri-l{background:rgba(34,197,94,.25);color:#86EFAC}
++ Aggiungi attività
+05Content Bank · Presentazione City Campus 2026
+8 idee estratte dalla presentazione
+FOTO CANTIERE REALI · PP. 8–10
+Corte Giardino, interni, stanze, corridoi, bagni — foto autentiche
+→ 2–3 WIP reel / Save Your Spot carousel
+RENDER SPAZI COMUNI · PP. 11–12
+Corte giardino, aree studio condivise, scale, luce naturale
+→ Carousel "Ecco gli spazi" · Visite Guidate
+RENDER CAFFETTERIA · P. 13
+Cucina condivisa aperta alla comunità: studenti, residenti e cittadini
+→ Carousel Cibo + Local Vibes · "Uno spazio che respira con la città"
+IMPATTO NUMERICO · P. 7
+–73,5% consumi · –88,5% CO₂ · 5.600 alberi equiv. · 8 posti sperimentali
+→ Energia carousel · Why We Do It · dati post-apertura
+CONTESTO MERCATO · P. 3
+9,92% offerta vs domanda studentesca a Vicenza — dato reale e concreto
+→ Hook carousel "Perché City Campus esiste" · Why We Do It
+OPEN DAY PROGRAMMA · P. 22
+11 giugno 18:30–21:30 · 3 slot: visita cantiere, presentazione, buffet
+→ 2–3 post dedicati: annuncio (1 Giu) · reminder (8 Giu) · live (11 Giu)
+QUOTE MILESTONE · P. 11
+“Campus Margherita non è un dormitorio. È un modo diverso di abitare Vicenza.”
+→ Caption post apertura · Milestone reel fine giugno
+RETE TERRITORIALE · P. 15
+60+ organizzazioni attive sul territorio: cooperativa, terzo settore, imprese
+→ Carousel comunità / Finanza · "Non costruiamo da soli"
+PERFORMANCE INSTAGRAM
+ULTIMI 20 POST
+631
+MEDIA
+2104
+BEST
+312
+MIN
 
-/* RUBRICHE */
-.rg{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
-.rc{border-radius:13px;padding:13px;min-height:105px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(255,255,255,.08)}
-.rcn{font-size:12px;font-weight:600}.rcd{font-size:8px;opacity:.5;margin-top:2px}
-.rcp{font-size:24px;font-weight:300;margin-top:6px;letter-spacing:-1px;line-height:1}
-.rb{height:4px;border-radius:2px;overflow:hidden;margin-top:6px;background:rgba(255,255,255,.1)}
-.rbf{height:100%;border-radius:2px;transition:width .5s}
-.r1c{background:linear-gradient(135deg,rgba(255,107,53,.18),rgba(240,200,8,.12))}.r1c .rbf{background:linear-gradient(90deg,#FF6B35,#F0C808)}
-.r2c{background:linear-gradient(135deg,rgba(59,130,246,.18),rgba(34,197,94,.12))}.r2c .rbf{background:linear-gradient(90deg,#3B82F6,#22C55E)}
-.r3c_{background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(52,211,153,.12))}.r3c_ .rbf{background:linear-gradient(90deg,#22C55E,#34D399)}
-.r4c{background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(236,72,153,.12))}.r4c .rbf{background:linear-gradient(90deg,#8B5CF6,#EC4899)}
-.r5c{background:rgba(255,255,255,.04)}.r5c .rbf{background:rgba(255,255,255,.3)}
+CONTENUTI PER MESE TARGET 8/MESE
 
-/* AREE */
-.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.ac{border-radius:13px;padding:13px;border:1px solid rgba(255,255,255,.08)}
-.acn{font-size:12px;font-weight:600;margin-bottom:2px}.acs{font-size:9px;color:var(--t2);margin-bottom:6px}
-.acx{font-size:8px;color:var(--t3);padding:5px 7px;background:rgba(255,255,255,.04);border-radius:5px;line-height:1.5}
-.ac.osp{background:rgba(232,75,138,.1)}.ac.ene{background:rgba(234,179,8,.1)}
-.ac.fin{background:rgba(59,130,246,.1)}.ac.cib{background:rgba(255,107,53,.1)}
-.ac.mob{background:rgba(236,72,153,.1)}.ac.cul{background:rgba(255,255,255,.04)}
+CITY CAMPUS · DASHBOARD SOCIAL · SENDY GONZALEZ · V10 · LUGLIO 2026
 
-/* RT */
-.rtr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}.rtr:last-child{border-bottom:none}
-.rta{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;letter-spacing:.3px}
-.rti{flex:1;min-width:0}.rtn{font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rto{font-size:8px;color:var(--t3)}
-.rtd{display:flex;gap:2px}.rtb{width:14px;height:14px;border-radius:3px;font-size:6px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.rtb.y{background:rgba(34,197,94,.6);color:#FFF}.rtb.n{background:rgba(255,255,255,.06);color:var(--t3)}
-.rtt{font-size:8px;padding:2px 6px;border-radius:4px;font-weight:500;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px}
-.tok{background:rgba(34,197,94,.2);color:#86EFAC}.tpr{background:rgba(59,130,246,.2);color:#93C5FD}
-.twa{background:rgba(245,158,11,.2);color:#FDE68A}.tof{background:rgba(255,255,255,.06);color:var(--t3)}
-
-/* ROADMAP */
-.rmh{display:grid;grid-template-columns:90px repeat(7,1fr);font-size:8px;color:var(--t3);text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
-.rmr{display:grid;grid-template-columns:90px repeat(7,1fr);align-items:center;margin-bottom:7px;min-height:36px;position:relative}
-.rmr:hover .rm-del{opacity:1}
-.rml{font-size:9px;color:var(--t2);font-weight:400;padding-right:6px;text-align:right}
-.rmb{border-radius:7px;padding:6px 9px;font-size:9px;font-weight:500;display:flex;align-items:center;justify-content:space-between;min-height:32px;cursor:pointer;transition:.15s;gap:8px}
-.rmb:hover{filter:brightness(1.15)}
-.rmt{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
-.rmtg{font-size:7px;padding:2px 5px;border-radius:3px;background:rgba(0,0,0,.25);font-weight:400;color:var(--t2)}
-.rmdu{font-size:7px;padding:2px 6px;border-radius:3px;background:rgba(0,0,0,.25);font-weight:500}
-.rmm{width:20px;height:20px;background:linear-gradient(135deg,#F0C808,#FF6B35);transform:rotate(45deg);border-radius:3px;margin:0 auto;box-shadow:0 0 18px rgba(255,107,53,.4)}
-.rm-del{position:absolute;right:-4px;top:6px;opacity:0}
-
-.cw{position:relative;height:160px}
-.ps{text-align:center}.pn{font-size:24px;font-weight:300;letter-spacing:-1px}.pl{font-size:7px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
-
-/* MODAL */
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-.mo.sh{display:flex}
-.md{background:rgba(25,30,40,.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:22px;width:360px;max-width:100%}
-.md h3{font-size:15px;font-weight:500;margin-bottom:14px}
-.md label{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);font-weight:500;margin-bottom:4px;display:block;margin-top:6px}
-.md input,.md select{width:100%;padding:10px 11px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#FFF;font-family:var(--font);font-size:11px;outline:none;transition:.15s}
-.md input:focus,.md select:focus{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.09)}
-.md-b{display:flex;gap:7px;margin-top:14px}
-.md-btn{flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:11px;cursor:pointer;font-weight:500;transition:.15s}
-.md-p{background:#FF6B35;color:#FFF}.md-p:hover{background:#FF7B45}
-.md-c{background:transparent;color:var(--t2);border:1px solid rgba(255,255,255,.1)}
-.md-c:hover{background:rgba(255,255,255,.05)}
-
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);background:rgba(20,25,35,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:9px 16px;font-size:10px;color:var(--text);z-index:200;opacity:0;transition:.3s;pointer-events:none}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-.ft{text-align:center;padding:14px 0;font-size:8px;color:var(--t3);letter-spacing:1px;font-weight:300;text-transform:uppercase}
-
-@media(max-width:1100px){.r4{grid-template-columns:1fr 1fr}.r3c{grid-template-columns:1fr}.rg{grid-template-columns:repeat(3,1fr)}.ag{grid-template-columns:1fr 1fr}}
-@media(max-width:768px){
-  .sb{transform:translateX(-200px)}
-  .sb.show{transform:translateX(0)}
-  .sb-toggle{display:flex}
-  .mn{margin-left:0!important;padding:14px;padding-top:56px}
-  .r4,.r2{grid-template-columns:1fr}
-  .ag,.rg{grid-template-columns:1fr 1fr}
-  .rmh,.rmr{grid-template-columns:60px repeat(7,1fr)}
-  .rml{font-size:8px}
-  .rmb{font-size:8px;padding:5px 7px}
-  .rmtg,.rmdu{font-size:6px}
-  .hd h1{font-size:18px}
-}
-@media print{
-  body{background:#fff;color:#000}
-  .sb,.sb-toggle,.btn,.del-x,.ca,.rm-del{display:none!important}
-  .mn{margin-left:0!important;padding:0}
-  .w{break-inside:avoid;background:#f6f7f8;border:1px solid #ddd;color:#222}
-}
-</style>
-</head>
-<body>
-<div class="layout">
-<aside class="sb" id="sidebar">
-  <button class="sb-close" onclick="toggleSB()" title="Chiudi sidebar">✕</button>
-  <div class="sb-brand">City Campus</div>
-  <div class="sb-sub">Dashboard</div>
-  <div class="sb-g">Overview</div>
-  <div class="sb-i on" data-fx="all"><span class="sb-ic">◉</span>Tutto</div>
-  <div class="sb-i" data-fx="cd"><span class="sb-ic">⏱</span>Countdown</div>
-  <div class="sb-i" data-fx="cal"><span class="sb-ic">▦</span>Calendario</div>
-  <div class="sb-i" data-fx="todo"><span class="sb-ic">☑</span>To-do</div>
-  <div class="sb-g">Contenuti</div>
-  <div class="sb-i" data-fx="rub"><span class="sb-ic">◧</span>Rubriche</div>
-  <div class="sb-i" data-fx="aree"><span class="sb-ic">◈</span>Aree tematiche</div>
-  <div class="sb-i" data-fx="rt"><span class="sb-ic">◎</span>Real Talk</div>
-  <div class="sb-i" data-fx="perf"><span class="sb-ic">▤</span>Performance</div>
-  <div class="sb-g">Progetto</div>
-  <div class="sb-i" data-fx="rm"><span class="sb-ic">▥</span>Roadmap</div>
-  <div class="sb-i" data-fx="mesi"><span class="sb-ic">▧</span>Mesi</div>
-  <div class="sb-g">Calendario editoriale</div>
-  <div class="sc"><div class="sc-t"><span>Febbraio</span><span class="sc-tn">8</span></div><div class="sc-g" id="sf"></div></div>
-  <div class="sc"><div class="sc-t"><span>Marzo</span><span class="sc-tn">6</span></div><div class="sc-g" id="sm"></div></div>
-  <div class="sc"><div class="sc-t"><span>Aprile</span><span class="sc-tn">7</span></div><div class="sc-g" id="sa"></div></div>
-  <div class="sc"><div class="sc-t"><span>Maggio</span><span class="sc-tn" id="scMC">0</span></div><div class="sc-g" id="ss"></div></div>
-  <div class="sb-f"><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FF6B35,#F0C808);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff">SG</div><div><div style="font-size:10px;font-weight:500">Sendy Gonzalez</div><div style="font-size:8px;color:var(--t3)">Digital Marketing</div></div></div></div>
-</aside>
-
-<main class="mn" id="main">
-  <button class="sb-toggle" id="sbToggle" onclick="toggleSB()">☰</button>
-  <div class="hd">
-    <div class="hd-l">
-      <div><h1>Dashboard</h1><p class="hd-d" id="hdDate">—</p></div>
-    </div>
-    <div class="hd-r">
-      <button class="btn" onclick="openM('event')">+ Evento</button>
-      <button class="btn" onclick="openM('todo')">+ To-do</button>
-      <button class="btn" onclick="window.print()">Esporta PDF</button>
-      <button class="btn warn" onclick="resetAll()" title="Cancella tutti i dati salvati">↺ Reset</button>
-    </div>
-  </div>
-
-  <div class="row r4">
-    <div class="w" data-w="mesi"><div class="sl">Pubblicati totale</div><div class="sv">21</div><div class="ss">Feb — Apr 2026</div></div>
-    <div class="w" data-w="mesi"><div class="sl">Febbraio</div><div class="sv" style="color:#86EFAC">8</div><div class="ss">Target ✓</div></div>
-    <div class="w" data-w="mesi"><div class="sl">Marzo</div><div class="sv" style="color:#FDE68A">6</div><div class="ss">−2 sotto target</div></div>
-    <div class="w" data-w="mesi"><div class="sl">Aprile</div><div class="sv" style="color:#FDE68A">7</div><div class="ss">+1 in revisione</div></div>
-  </div>
-
-  <div class="row r3c">
-    <div class="w cd" data-w="cd">
-      <div class="gl g1"></div><div class="gl g2"></div>
-      <div class="wt" style="position:relative;z-index:1">Countdown <span class="wb" id="cdC">0/0</span></div>
-      <div class="cd-n" id="dL">—</div>
-      <div class="cd-l">giorni all'apertura</div>
-      <div class="cd-evs" id="cdE"></div>
-      <div class="ca" style="margin-top:10px;position:relative;z-index:1" onclick="openM('countdown')">+ Aggiungi scadenza</div>
-    </div>
-
-    <div class="w" data-w="cal" style="position:relative">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap">
-        <div class="cv-tog">
-          <button id="vwW" onclick="setView('week')">Weekly</button>
-          <button id="vwM" class="on" onclick="setView('month')">Monthly</button>
-        </div>
-        <span class="wb" id="calC">0 eventi</span>
-      </div>
-      <div id="cvMonth">
-        <div style="margin-bottom:8px"><span class="cm">Maggio</span> <span class="cy">2026</span></div>
-        <div class="cg" id="cG"></div>
-      </div>
-      <div id="cvWeek" style="display:none">
-        <div class="cw-bigday"><span class="cw-bigday-m" id="cwMon">Maggio</span><span class="cw-bigday-d" id="cwDay">4</span></div>
-        <div class="cw-week" id="cwGrid"></div>
-        <div class="cw-events" id="cwEv"></div>
-      </div>
-      <div class="ca" onclick="openM('event')">+ Aggiungi evento</div>
-      <div class="ev-popup" id="evP"></div>
-    </div>
-
-    <div class="w tb" data-w="todo">
-      <div class="wt">To-do <span class="wb" id="tD">0/0</span></div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline">
-        <div class="tp" id="tP">0%</div>
-        <div class="tps">completato</div>
-      </div>
-      <div class="tbar"><div class="tbf" id="tB" style="width:0%"></div></div>
-      <div id="tL"></div>
-      <div class="ca" onclick="openM('todo')" style="margin-top:8px">+ Aggiungi attività</div>
-    </div>
-  </div>
-
-  <div class="row r1"><div class="w" data-w="rub">
-    <div class="wt">Rubriche <span class="wb">5 rubriche</span></div>
-    <div class="rg">
-      <div class="rc r1c"><div><div class="rcn">Why We Do It</div><div class="rcd">Aree tematiche</div></div><div><div class="rcp">33%</div><div class="rb"><div class="rbf" style="width:33%"></div></div></div></div>
-      <div class="rc r2c"><div><div class="rcn">Real Talk</div><div class="rcd">Interviste</div></div><div><div class="rcp">20%</div><div class="rb"><div class="rbf" style="width:20%"></div></div></div></div>
-      <div class="rc r3c_"><div><div class="rcn">Work in Progress</div><div class="rcd">Cantiere</div></div><div><div class="rcp">60%</div><div class="rb"><div class="rbf" style="width:60%"></div></div></div></div>
-      <div class="rc r4c"><div><div class="rcn">Local Vibes</div><div class="rcd">Territorio</div></div><div><div class="rcp">0%</div><div class="rb"><div class="rbf" style="width:0%"></div></div></div></div>
-      <div class="rc r5c"><div><div class="rcn">Save Your Spot</div><div class="rcd">Conversione</div></div><div><div class="rcp">0%</div><div class="rb"><div class="rbf" style="width:0%"></div></div></div></div>
-    </div>
-  </div></div>
-
-  <div class="row r2">
-    <div class="w" data-w="aree">
-      <div class="wt">Aree tematiche <span class="wb">2/6</span></div>
-      <div class="ag">
-        <div class="ac osp"><div class="acn">Ospitalità</div><div class="acs">✓ Pubblicato</div><div class="acx">Carosello: spazi, stanze, appartamenti<br>Reel WIP: foto interni</div></div>
-        <div class="ac ene"><div class="acn">Energia</div><div class="acs">✓ Pubblicato</div><div class="acx">Carosello: classe A3, geotermico, nZEB<br>Real Talk: Doriano (collegamento)</div></div>
-        <div class="ac fin"><div class="acn">Finanza</div><div class="acs">⟳ In revisione</div><div class="acx">Carosello: crowdinvesting, 194 soci<br>Real Talk: Paolo / CDA (TBD)</div></div>
-        <div class="ac cib"><div class="acn">Cibo</div><div class="acs">○ Da creare</div><div class="acx">Carosello: bottega km zero, filiera equa<br>Real Talk: partner caffetteria (TBD)</div></div>
-        <div class="ac mob"><div class="acn">Mobilità</div><div class="acs">○ Da creare</div><div class="acx">Carosello: ciclofficina, bike sharing<br>Connessioni urbane sostenibili</div></div>
-        <div class="ac cul"><div class="acn">Cultura</div><div class="acs">○ Da creare</div><div class="acx">Carosello: eventi, laboratori, quartiere<br>Real Talk: Nicola Bolcato / Agendo</div></div>
-      </div>
-    </div>
-    <div class="w" data-w="rt">
-      <div class="wt">Real Talk <span class="wb">8 fatte · 6 da fare</span></div>
-      <div class="rtr"><div class="rta" style="background:rgba(34,197,94,.2);color:#86EFAC">DS</div><div class="rti"><div class="rtn">Doriano Stevanon</div><div class="rto">Coordinatore</div></div><div class="rtd"><div class="rtb y">C</div><div class="rtb y">R</div><div class="rtb y">Y</div></div><span class="rtt tok">3/3</span></div>
-      <div class="rtr"><div class="rta" style="background:rgba(59,130,246,.2);color:#93C5FD">CG</div><div class="rti"><div class="rtn">Carraro Gips</div><div class="rto">Fornitore</div></div><div class="rtd"><div class="rtb n">C</div><div class="rtb n">R</div><div class="rtb n">Y</div></div><span class="rtt tpr">Progr.</span></div>
-      <div class="rtr"><div class="rta">LE</div><div class="rti"><div class="rtn">Luigi — Elettrosystem</div><div class="rto">Fornitore</div></div><div class="rtd"><div class="rtb n">C</div><div class="rtb n">R</div><div class="rtb n">Y</div></div><span class="rtt twa">Fatta</span></div>
-      <div class="rtr"><div class="rta">VS</div><div class="rti"><div class="rtn">Virginia — Spazio Agorà</div><div class="rto">Progettista</div></div><div class="rtd"><div class="rtb n">C</div><div class="rtb n">R</div><div class="rtb n">Y</div></div><span class="rtt twa">Fatta</span></div>
-      <div class="rtr"><div class="rta">+5</div><div class="rti"><div class="rtn">Saccozza, Andrea, Bolcato…</div><div class="rto">Professionisti</div></div><div class="rtd"><div class="rtb n">C</div><div class="rtb n">R</div><div class="rtb n">Y</div></div><span class="rtt twa">Fatte</span></div>
-      <div class="rtr" style="opacity:.3"><div class="rta">TM</div><div class="rti"><div class="rtn">Tommy + Massi</div><div class="rto">Co-fondatori</div></div><div class="rtd"><div class="rtb n">C</div><div class="rtb n">R</div><div class="rtb n">Y</div></div><span class="rtt tof">Più avanti</span></div>
-    </div>
-  </div>
-
-  <div class="row r1"><div class="w" data-w="rm">
-    <div class="wt">Roadmap 2026 <span class="wb">Gen → Lug</span></div>
-    <div class="rmh"><div></div><div>Gen</div><div>Feb</div><div>Mar</div><div>Apr</div><div>Mag</div><div>Giu</div><div>Lug</div></div>
-    <div id="rmR"></div>
-    <div class="ca" onclick="openM('roadmap')" style="margin-top:8px">+ Aggiungi attività</div>
-  </div></div>
-
-  <div class="row r2">
-    <div class="w" data-w="perf">
-      <div class="wt">Performance Instagram <span class="wb">ultimi 20 post</span></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
-        <div class="ps"><div class="pn">631</div><div class="pl">Media</div></div>
-        <div class="ps"><div class="pn" style="color:#FF6B35">2104</div><div class="pl">Best</div></div>
-        <div class="ps"><div class="pn">312</div><div class="pl">Min</div></div>
-      </div>
-      <div class="cw"><canvas id="cV"></canvas></div>
-    </div>
-    <div class="w" data-w="mesi">
-      <div class="wt">CONTENUTI PER MESE
-TARGET 8/MESE
-</div>
-      <div class="cw"><canvas id="cM"></canvas></div>
-    </div>
-  </div>
-  <div class="ft">City Campus · Dashboard Social · Sendy Gonzalez · v7 · Weekly/Monthly · eventi colorati</div>
-</main>
-</div>
-
-<div class="mo" id="modal"><div class="md">
-  <h3 id="mT">Aggiungi</h3>
-  <label>Nome</label>
-  <input type="text" id="mI" placeholder="Es. Post Finanza...">
-  <label id="mDl">Data</label>
-  <input type="date" id="mD">
-  <label id="mCl">Categoria</label>
-  <select id="mC">
-    <option value="social">Social Media</option>
-    <option value="seo">SEO</option>
-    <option value="landing">Landing Page</option>
-    <option value="ads">Campagne Ads</option>
-    <option value="open">Open Day</option>
-    <option value="altro">Altro</option>
-  </select>
-  <label id="mPl" style="display:none">Priorità</label>
-  <select id="mP" style="display:none">
-    <option value="h">Alta</option>
-    <option value="m">Media</option>
-    <option value="l">Bassa</option>
-  </select>
-  <label id="mClrL" style="display:none">Colore</label>
-  <select id="mClr" style="display:none">
-    <option value="orange">🟠 Arancio — Lancio / Apertura</option>
-    <option value="blue">🔵 Blu — Open Day / Eventi</option>
-    <option value="pink">🩷 Rosa — Real Talk / Interviste</option>
-    <option value="green">🟢 Verde — Pubblicazione</option>
-    <option value="purple">🟣 Viola — Campagne Ads</option>
-    <option value="yellow">🟡 Giallo — Riunioni / Call</option>
-    <option value="red">🔴 Rosso — Scadenza</option>
-  </select>
-  <div class="md-b">
-    <button class="md-btn md-c" onclick="closeM()">Annulla</button>
-    <button class="md-btn md-p" onclick="addItem()">Aggiungi</button>
-  </div>
-</div></div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-/* ============== STATE + STORAGE ============== */
-const LS_KEY = 'cityCampusDashboard.v7';
-const DEFAULT_STATE = {
-  todos: [
-    {id:'t1', name:'Post Finanza',           pri:'h', done:false},
-    {id:'t2', name:'Proposta Landing Page',  pri:'h', done:false},
-    {id:'t3', name:'Doc campagne Meta',      pri:'m', done:false},
-    {id:'t4', name:'Landing Page WordPress', pri:'h', done:false},
-    {id:'t5', name:'Materiale Carraro Gips', pri:'m', done:false},
-    {id:'t6', name:'GBP Margherita',         pri:'m', done:false},
-    {id:'t7', name:'Aggiornare testi sito',  pri:'l', done:false},
-    {id:'t8', name:'Batch contenuti maggio', pri:'m', done:false}
-  ],
-  countdownEvents: [
-    {id:'c1', name:'Post Finanza — chiudere',     done:false, fixed:false},
-    {id:'c2', name:'Proposta Landing Page',       done:false, fixed:false},
-    {id:'c3', name:'Landing Page — Wireframe',    done:false, fixed:false},
-    {id:'c4', name:'GBP Margherita',              done:false, fixed:false},
-    {id:'c5', name:'Fine giugno — Apertura',      done:false, fixed:true, color:'#FF6B35'},
-    {id:'c6', name:'Giugno — Open Day #1',        done:false, fixed:true, color:'#3B82F6'},
-    {id:'c7', name:'Luglio — Open Day #2',        done:false, fixed:true, color:'#8B5CF6'}
-  ],
-  calEvents: {
-    2:  [{name:'Real Talk Doriano', color:'pink'}],
-    6:  [{name:'Carraro Gips', color:'blue'}],
-    12: [{name:'Post Finanza', color:'orange'}],
-    13: [{name:'Pubblicazione Energia', color:'green'}],
-    19: [{name:'Open Day prep', color:'orange'}],
-    20: [{name:'Campagna Ads start', color:'purple'}],
-    26: [{name:'Landing wireframe', color:'orange'}],
-    27: [{name:'Pubblicazione Ospitalità', color:'green'}],
-    29: [{name:'Batch maggio', color:'pink'}]
-  },
-  roadmap: [
-    {id:'r1', label:'Social Media',  from:1, to:8, color:'green-strong', subs:['Piano editoriale','Produzione','Pubblicazione'], dur:'6 mesi', fixed:true},
-    {id:'r2', label:'SEO',           from:1, to:8, color:'green',        subs:['Audit','On-page','Informaz.','Transaz.','Local'], dur:'6 mesi', fixed:true},
-    {id:'r3', label:'Sito Web',      from:1, to:8, color:'green-soft',   subs:['Analisi','Straordinaria','Ordinaria'], dur:'6 mesi', fixed:true},
-    {id:'r4', label:'Landing Page',  from:4, to:8, color:'orange',       subs:['Wireframe','Sviluppo','Live'], dur:'3 mesi', fixed:true},
-    {id:'r5', label:'Campagne Ads',  from:4, to:8, color:'purple',       subs:['Engagement','Notorietà','Lancio'], dur:'3 mesi', fixed:true},
-    {id:'r6', label:'Open Day',      from:6, to:8, color:'blue',         subs:['Giugno','Luglio'], dur:'2 mesi', fixed:true},
-    {id:'r7', label:'Apertura',      from:6, to:7, color:'diamond',      subs:[], dur:'', fixed:true}
-  ]
-};
-let state = loadState();
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
-    const s = JSON.parse(raw);
-    // shallow merge missing defaults so adding new fields stays safe
-    return {
-      todos: s.todos || DEFAULT_STATE.todos,
-      countdownEvents: s.countdownEvents || DEFAULT_STATE.countdownEvents,
-      calEvents: s.calEvents || {},
-      roadmap: s.roadmap || DEFAULT_STATE.roadmap
-    };
-  }catch(e){
-    console.warn('State load failed, using defaults', e);
-    return JSON.parse(JSON.stringify(DEFAULT_STATE));
-  }
-}
-function saveState(){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-  catch(e){ console.warn('Save failed', e); }
-}
-function uid(p){ return p+Math.random().toString(36).slice(2,8); }
-
-function resetAll(){
-  if(!confirm('Cancellare tutti i dati salvati e ripristinare i valori iniziali?')) return;
-  localStorage.removeItem(LS_KEY);
-  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-  renderAll();
-  toast('Dati ripristinati');
-}
-
-function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._h);
-  t._h = setTimeout(()=>t.classList.remove('show'), 1800);
-}
-
-/* ============== DATE / COUNTDOWN ============== */
-const OPENING = new Date(2026,5,30); // June 30, 2026 — "fine giugno"
-function fmtDate(d){
-  const ms = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
-  return d.getDate()+' '+ms[d.getMonth()]+' '+d.getFullYear();
-}
-function updateCD(){
-  const now = new Date();
-  const days = Math.max(0, Math.ceil((OPENING - now)/86400000));
-  document.getElementById('dL').textContent = days;
-  document.getElementById('hdDate').textContent = fmtDate(now);
-}
-
-/* ============== SIDEBAR ============== */
-function toggleSB(){
-  const sb = document.getElementById('sidebar');
-  const mn = document.getElementById('main');
-  if(window.matchMedia('(max-width:768px)').matches){
-    sb.classList.toggle('show');
-  } else {
-    sb.classList.toggle('hidden');
-    mn.classList.toggle('full');
-    document.getElementById('sbToggle').classList.toggle('show', sb.classList.contains('hidden'));
-  }
-}
-
-document.querySelectorAll('.sb-i').forEach(el=>{
-  el.addEventListener('click', ()=>{
-    document.querySelectorAll('.sb-i').forEach(s=>s.classList.remove('on'));
-    el.classList.add('on');
-    const id = el.dataset.fx;
-    const ws = document.querySelectorAll('.w');
-    if(id==='all'){
-      ws.forEach(w=>w.classList.remove('dim'));
-      window.scrollTo({top:0,behavior:'smooth'});
-    } else {
-      ws.forEach(w=>w.classList.toggle('dim', w.dataset.w!==id));
-      const t = document.querySelector('[data-w="'+id+'"]:not(.dim)');
-      if(t) t.scrollIntoView({behavior:'smooth',block:'center'});
-    }
-    if(window.matchMedia('(max-width:768px)').matches) document.getElementById('sidebar').classList.remove('show');
-  });
-});
-
-/* ============== TODO ============== */
-function renderTodo(){
-  const list = document.getElementById('tL');
-  list.innerHTML = '';
-  state.todos.forEach(t=>{
-    const pc = t.pri==='h'?'pri-h':t.pri==='m'?'pri-m':'pri-l';
-    const pl = t.pri==='h'?'Alta':t.pri==='m'?'Media':'Bassa';
-    const bc = t.pri==='h'?'#EF4444':t.pri==='m'?'#F59E0B':'#22C55E';
-    const d = document.createElement('div');
-    d.className = 'ti';
-    d.innerHTML = '<div class="tc'+(t.done?' dn':'')+'" style="border-color:'+bc+'"></div>'
-                + '<div class="tl'+(t.done?' sk':'')+'"></div>'
-                + '<span class="pri '+pc+'">'+pl+'</span>'
-                + '<button class="del-x" title="Elimina">×</button>';
-    d.querySelector('.tl').textContent = t.name;
-    d.querySelector('.tc').onclick = ()=>{ t.done = !t.done; saveState(); renderTodo(); };
-    d.querySelector('.del-x').onclick = (e)=>{ e.stopPropagation(); state.todos = state.todos.filter(x=>x.id!==t.id); saveState(); renderTodo(); };
-    list.appendChild(d);
-  });
-  const total = state.todos.length;
-  const done = state.todos.filter(t=>t.done).length;
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('tP').textContent = pct+'%';
-  document.getElementById('tD').textContent = done+'/'+total;
-  document.getElementById('tB').style.width = pct+'%';
-}
-
-/* ============== COUNTDOWN EVENTS ============== */
-function renderCountdown(){
-  const wrap = document.getElementById('cdE');
-  wrap.innerHTML = '';
-  let firstFixed = true;
-  state.countdownEvents.forEach(ev=>{
-    if(ev.fixed && firstFixed){
-      const sep = document.createElement('div');
-      sep.style.cssText = 'border-top:1px solid rgba(255,255,255,.06);margin-top:6px;padding-top:6px;font-size:7px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.25);font-weight:500;margin-bottom:2px';
-      sep.textContent = 'Scadenze fisse';
-      wrap.appendChild(sep);
-      firstFixed = false;
-    }
-    const row = document.createElement('div');
-    row.className = 'cd-ev'+(ev.done?' dn':'');
-    const ck = document.createElement('div');
-    ck.className = 'cd-ck'+(ev.done?' dn':'');
-    if(ev.fixed && ev.color){ ck.style.borderColor = ev.color; }
-    ck.onclick = ()=>{ if(!ev.fixed){ ev.done = !ev.done; saveState(); renderCountdown(); } };
-    if(ev.fixed) ck.style.cursor = 'default';
-    const tx = document.createElement('span');
-    tx.className = 'cd-tx';
-    tx.textContent = ev.name;
-    if(ev.fixed) tx.style.color = 'var(--text)';
-    tx.onclick = ()=>{ if(!ev.fixed){ ev.done = !ev.done; saveState(); renderCountdown(); } };
-    row.appendChild(ck);
-    row.appendChild(tx);
-    if(!ev.fixed){
-      const del = document.createElement('button');
-      del.className = 'del-x';
-      del.textContent = '×';
-      del.onclick = (e)=>{ e.stopPropagation(); state.countdownEvents = state.countdownEvents.filter(x=>x.id!==ev.id); saveState(); renderCountdown(); };
-      row.appendChild(del);
-    }
-    wrap.appendChild(row);
-  });
-  const tot = state.countdownEvents.filter(e=>!e.fixed).length;
-  const dn  = state.countdownEvents.filter(e=>!e.fixed && e.done).length;
-  document.getElementById('cdC').textContent = dn+'/'+tot;
-}
-
-/* ============== CALENDAR (May 2026) ============== */
-let calView = 'month'; // 'month' | 'week'
-let calSelDay = 4;     // selected day in week view
-
-function setView(v){
-  calView = v;
-  document.getElementById('vwM').classList.toggle('on', v==='month');
-  document.getElementById('vwW').classList.toggle('on', v==='week');
-  document.getElementById('cvMonth').style.display = v==='month'?'block':'none';
-  document.getElementById('cvWeek').style.display  = v==='week' ?'block':'none';
-  buildCal();
-}
-
-const COLOR_NAMES = {orange:'Arancio', blue:'Blu', pink:'Rosa', green:'Verde', purple:'Viola', yellow:'Giallo', red:'Rosso'};
-
-// normalize event entry → {name, color}
-function normEv(e){
-  if(typeof e === 'string') return {name:e, color:'orange'};
-  return {name:e.name||'', color:e.color||'orange'};
-}
-
-function buildCal(){
-  if(calView === 'month') buildMonthView();
-  else buildWeekView();
-  // counters
-  let totEv = 0;
-  Object.values(state.calEvents).forEach(arr=>totEv+=arr.length);
-  document.getElementById('calC').textContent = totEv+' event'+(totEv===1?'o':'i');
-  document.getElementById('scMC').textContent = totEv;
-  buildSidebarMiniCals();
-}
-
-function buildMonthView(){
-  const g = document.getElementById('cG');
-  g.innerHTML = '';
-  ['L','M','M','G','V','S','D'].forEach(d=>{
-    const e = document.createElement('div');
-    e.className = 'cdl';
-    e.textContent = d;
-    g.appendChild(e);
-  });
-  for(let i=0;i<4;i++){
-    const e = document.createElement('div');
-    e.className = 'cc em';
-    g.appendChild(e);
-  }
-  const today = new Date();
-  const isMay2026 = today.getFullYear()===2026 && today.getMonth()===4;
-  const todayDay = isMay2026 ? today.getDate() : 4;
-  for(let d=1; d<=31; d++){
-    const e = document.createElement('div');
-    e.className = 'cc';
-    if(d===todayDay) e.classList.add('td');
-    const arr = state.calEvents[d];
-    let lbl = '';
-    let primary = null;
-    if(arr && arr.length){
-      const first = normEv(arr[0]);
-      primary = first.color;
-      lbl = first.name;
-      e.classList.add('has-badge', 'bg-'+primary);
-    }
-    const num = document.createElement('div');
-    num.className = 'cc-num';
-    num.textContent = d;
-    e.appendChild(num);
-    if(arr && arr.length){
-      const lab = document.createElement('div');
-      lab.className = 'cc-lbl';
-      lab.textContent = lbl;
-      e.appendChild(lab);
-    } else {
-      // empty placeholder line for visual rhythm of certain weekday picks (optional)
-    }
-    e.onclick = (ev)=>{ ev.stopPropagation(); showDE(d, e); };
-    g.appendChild(e);
-  }
-}
-
-function buildWeekView(){
-  const grid = document.getElementById('cwGrid');
-  grid.innerHTML = '';
-  // build the week containing calSelDay (May 2026 starts Friday)
-  // map day-of-month → weekday index where May 1 = Fri (idx 4 if Mon=0)
-  // Mon=0..Sun=6: May 1 (Fri)=4, May 2=5, May 3=6, May 4=0
-  const dowOf = (day)=>{ const base=4; return (base + (day-1)) % 7; };
-  // find Monday of selected week
-  const selDow = dowOf(calSelDay);
-  let weekStart = calSelDay - selDow; // Monday-based
-  if(weekStart < 1){
-    // clamp; show first 7 days of May at minimum
-    weekStart = 1 - 0; // first row spans Apr 27..May 3 conceptually; we just clamp display
-  }
-  const dnames = ['L','M','M','G','V','S','D'];
-  for(let i=0;i<7;i++){
-    const dom = weekStart + i;
-    const cell = document.createElement('div');
-    cell.className = 'cw-day';
-    if(dom < 1 || dom > 31){
-      cell.style.opacity = '.25';
-      cell.style.pointerEvents = 'none';
-      cell.innerHTML = '<div class="cw-day-dn">'+dnames[i]+'</div><div class="cw-day-num">·</div>';
-    } else {
-      const isSel = dom === calSelDay;
-      if(isSel) cell.classList.add('td');
-      const arr = state.calEvents[dom];
-      if(arr && arr.length) cell.classList.add('has-ev');
-      cell.innerHTML = '<div class="cw-day-dn">'+dnames[i]+'</div><div class="cw-day-num">'+dom+'</div><div class="cw-day-dot"></div>';
-      cell.onclick = ()=>{ calSelDay = dom; buildCal(); };
-    }
-    grid.appendChild(cell);
-  }
-  // big day header
-  document.getElementById('cwDay').textContent = calSelDay;
-  document.getElementById('cwMon').textContent = 'Maggio';
-  // events of selected day
-  const ev = document.getElementById('cwEv');
-  const arr = state.calEvents[calSelDay] || [];
-  if(!arr.length){
-    ev.innerHTML = '<div class="cw-empty">Nessun evento — clicca "+ Aggiungi evento"</div>';
-  } else {
-    ev.innerHTML = '';
-    arr.forEach((raw,i)=>{
-      const x = normEv(raw);
-      const row = document.createElement('div');
-      row.className = 'cw-ev-row';
-      row.innerHTML = '<div class="cw-ev-dot bg-'+x.color+'" style="background:'+colorHex(x.color)+'"></div><div style="flex:1">'+escapeHtml(x.name)+'</div><button class="del-x">×</button>';
-      row.querySelector('.del-x').onclick = ()=>{
-        state.calEvents[calSelDay].splice(i,1);
-        if(!state.calEvents[calSelDay].length) delete state.calEvents[calSelDay];
-        saveState();
-        buildCal();
-      };
-      ev.appendChild(row);
-    });
-  }
-}
-
-function colorHex(c){
-  return ({orange:'#FF6B35',blue:'#3B82F6',pink:'#EC4899',green:'#22C55E',purple:'#8B5CF6',yellow:'#F0C808',red:'#EF4444'})[c]||'#FF6B35';
-}
-
-function showDE(day, el){
-  const p = document.getElementById('evP');
-  if(p.classList.contains('show') && p.dataset.day == day){
-    p.classList.remove('show');
-    return;
-  }
-  p.dataset.day = day;
-  const evs = state.calEvents[day] || [];
-  let h = '<h4>'+day+' maggio 2026</h4>';
-  if(!evs.length){
-    h += '<div style="color:var(--t3);font-size:9px;padding:4px 0">Nessun evento</div>';
-  } else {
-    evs.forEach((raw,i)=>{
-      const x = normEv(raw);
-      h += '<div class="ev-popup-item"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:'+colorHex(x.color)+';display:inline-block"></span>'+escapeHtml(x.name)+'</span><button class="del-x px" data-i="'+i+'" data-d="'+day+'">×</button></div>';
-    });
-  }
-  h += '<div style="margin-top:8px;cursor:pointer;color:#FF6B35;font-size:10px;font-weight:500;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)" onclick="closeP();openM(\'event\','+day+')">+ Aggiungi evento</div>';
-  p.innerHTML = h;
-  p.querySelectorAll('.del-x').forEach(b=>{
-    b.onclick = (ev)=>{
-      ev.stopPropagation();
-      const di = parseInt(b.dataset.d), ix = parseInt(b.dataset.i);
-      state.calEvents[di].splice(ix,1);
-      if(!state.calEvents[di].length) delete state.calEvents[di];
-      saveState();
-      buildCal();
-      closeP();
-    };
-  });
-  const r = el.getBoundingClientRect();
-  const pr = el.closest('.w').getBoundingClientRect();
-  p.style.left = Math.min(Math.max(8, r.left - pr.left), pr.width - 220) + 'px';
-  p.style.top  = (r.bottom - pr.top + 6) + 'px';
-  p.classList.add('show');
-}
-function closeP(){ document.getElementById('evP').classList.remove('show'); }
-
-function escapeHtml(s){return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-/* ============== SIDEBAR MINI CALS ============== */
-function buildSidebarMiniCals(){
-  // Days published per month per spec: Feb 8, Mar 6, Apr 7. May from state.calEvents days.
-  const mayDays = Object.keys(state.calEvents).filter(k=>state.calEvents[k] && state.calEvents[k].length).map(k=>+k);
-  const months = [
-    {id:'sf', d:28, s:6, p:[3,5,9,11,16,18,23,25]},   // Feb 2026 starts Sun → 6 offset (Mon-first week)
-    {id:'sm', d:31, s:6, p:[2,9,16,20,26,30]},        // Mar 2026 starts Sun → 6
-    {id:'sa', d:30, s:2, p:[1,7,14,17,22,25,28]},     // Apr 2026 starts Wed → 2
-    {id:'ss', d:31, s:4, p:mayDays}                   // May 2026 starts Fri → 4
-  ];
-  months.forEach(m=>{
-    const g = document.getElementById(m.id);
-    if(!g) return;
-    g.innerHTML = '';
-    for(let i=0;i<m.s;i++){ const e=document.createElement('div'); e.className='sc-d e'; g.appendChild(e); }
-    for(let d=1; d<=m.d; d++){ const e=document.createElement('div'); e.className='sc-d '+(m.p.includes(d)?'p':'o'); g.appendChild(e); }
-  });
-}
-
-/* ============== ROADMAP ============== */
-const RM_COLORS = {
-  'green-strong':'linear-gradient(90deg,rgba(34,197,94,.32),rgba(34,197,94,.1))',
-  'green':       'linear-gradient(90deg,rgba(34,197,94,.22),rgba(34,197,94,.07))',
-  'green-soft':  'linear-gradient(90deg,rgba(34,197,94,.15),rgba(34,197,94,.04))',
-  'orange':      'linear-gradient(90deg,rgba(255,107,53,.32),rgba(255,107,53,.1))',
-  'purple':      'linear-gradient(90deg,rgba(139,92,246,.32),rgba(139,92,246,.1))',
-  'blue':        'linear-gradient(90deg,rgba(59,130,246,.32),rgba(59,130,246,.1))',
-  'gray':        'linear-gradient(90deg,rgba(255,255,255,.15),rgba(255,255,255,.04))'
-};
-function categoryToColor(cat){
-  return ({social:'green-strong',seo:'green',landing:'orange',ads:'purple',open:'blue',altro:'gray'})[cat]||'gray';
-}
-function renderRoadmap(){
-  const wrap = document.getElementById('rmR');
-  wrap.innerHTML = '';
-  state.roadmap.forEach(r=>{
-    const row = document.createElement('div');
-    row.className = 'rmr';
-    const lab = document.createElement('div');
-    lab.className = 'rml';
-    lab.textContent = r.label;
-    row.appendChild(lab);
-    if(r.color === 'diamond'){
-      const c = document.createElement('div');
-      c.style.cssText = 'grid-column:'+r.from+'/'+(r.to+1)+';display:flex;align-items:center;gap:6px;justify-content:center';
-      c.innerHTML = '<div class="rmm"></div><span style="font-size:9px;font-weight:600;letter-spacing:.3px">Apertura</span>';
-      row.appendChild(c);
-    } else {
-      const c = document.createElement('div');
-      c.style.gridColumn = r.from+'/'+(r.to+1);
-      const bar = document.createElement('div');
-      bar.className = 'rmb';
-      bar.style.background = RM_COLORS[r.color] || RM_COLORS.gray;
-      bar.innerHTML = '<span>'+escapeHtml(r.label)+'</span>'+(r.dur?'<span class="rmdu">'+escapeHtml(r.dur)+'</span>':'');
-      c.appendChild(bar);
-      if(r.subs && r.subs.length){
-        const tags = document.createElement('div');
-        tags.className = 'rmt';
-        r.subs.forEach(s=>{
-          const tg = document.createElement('span');
-          tg.className = 'rmtg';
-          tg.textContent = s;
-          tags.appendChild(tg);
-        });
-        c.appendChild(tags);
-      }
-      row.appendChild(c);
-    }
-    if(!r.fixed){
-      const del = document.createElement('button');
-      del.className = 'del-x rm-del';
-      del.textContent = '×';
-      del.onclick = ()=>{ state.roadmap = state.roadmap.filter(x=>x.id!==r.id); saveState(); renderRoadmap(); };
-      row.appendChild(del);
-    }
-    wrap.appendChild(row);
-  });
-}
-
-/* ============== MODAL ============== */
-let modalType = 'event';
-let modalContext = null;
-function openM(type, dayCtx){
-  modalType = type;
-  modalContext = dayCtx || null;
-  const titles = {todo:'Nuova attività', event:'Nuovo evento calendario', countdown:'Nuova scadenza countdown', roadmap:'Nuova attività roadmap'};
-  document.getElementById('mT').textContent = titles[type] || 'Aggiungi';
-  document.getElementById('modal').classList.add('sh');
-
-  const showPri = type==='todo';
-  const showCat = type==='roadmap';
-  const showClr = type==='event';
-  const showDate = type==='event' || type==='countdown' || type==='todo';
-  document.getElementById('mP').style.display  = showPri ? 'block' : 'none';
-  document.getElementById('mPl').style.display = showPri ? 'block' : 'none';
-  document.getElementById('mC').style.display  = showCat ? 'block' : 'none';
-  document.getElementById('mCl').style.display = showCat ? 'block' : 'none';
-  document.getElementById('mClr').style.display  = showClr ? 'block' : 'none';
-  document.getElementById('mClrL').style.display = showClr ? 'block' : 'none';
-  document.getElementById('mD').style.display  = showDate ? 'block' : 'none';
-  document.getElementById('mDl').style.display = showDate ? 'block' : 'none';
-
-  // sane default date
-  const di = document.getElementById('mD');
-  if(modalContext && type==='event'){
-    di.value = '2026-05-'+String(modalContext).padStart(2,'0');
-  } else {
-    const t = new Date();
-    di.value = (t.getFullYear()===2026 ? t : new Date(2026,4,4)).toISOString().slice(0,10);
-  }
-  document.getElementById('mI').value='';
-  setTimeout(()=>document.getElementById('mI').focus(), 80);
-}
-function closeM(){ document.getElementById('modal').classList.remove('sh'); }
-
-function addItem(){
-  const name = document.getElementById('mI').value.trim();
-  if(!name){ document.getElementById('mI').focus(); return; }
-  const dateStr = document.getElementById('mD').value;
-  if(modalType==='todo'){
-    const pri = document.getElementById('mP').value;
-    state.todos.push({id:uid('t'), name, pri, done:false});
-    renderTodo();
-    toast('Attività aggiunta');
-  } else if(modalType==='event'){
-    let day = null;
-    if(dateStr){
-      const [y,m,d] = dateStr.split('-').map(Number);
-      if(y===2026 && m===5){ day = d; }
-    }
-    const color = document.getElementById('mClr').value || 'orange';
-    if(day!=null){
-      if(!state.calEvents[day]) state.calEvents[day] = [];
-      state.calEvents[day].push({name, color});
-      calSelDay = day;
-    }
-    // also append a non-fixed countdown row
-    state.countdownEvents.unshift({id:uid('c'), name: name+(day?' ('+day+'/05)':''), done:false, fixed:false});
-    // keep fixed scadenze at the bottom
-    state.countdownEvents.sort((a,b)=> (a.fixed?1:0) - (b.fixed?1:0));
-    buildCal();
-    renderCountdown();
-    toast(day!=null?'Evento aggiunto al '+day+' maggio':'Evento aggiunto');
-  } else if(modalType==='countdown'){
-    state.countdownEvents.unshift({id:uid('c'), name, done:false, fixed:false});
-    state.countdownEvents.sort((a,b)=> (a.fixed?1:0) - (b.fixed?1:0));
-    renderCountdown();
-    toast('Scadenza aggiunta');
-  } else if(modalType==='roadmap'){
-    const cat = document.getElementById('mC').value;
-    state.roadmap.push({id:uid('r'), label:name, from:5, to:8, color:categoryToColor(cat), subs:[], dur:'Nuovo', fixed:false});
-    renderRoadmap();
-    toast('Attività roadmap aggiunta');
-  }
-  saveState();
-  closeM();
-}
-
-/* close modal/popup helpers */
-document.getElementById('modal').addEventListener('click', e=>{ if(e.target.id==='modal') closeM(); });
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.ev-popup') && !e.target.closest('.cc')) closeP();
-});
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){ closeM(); closeP(); }
-  if(e.key==='Enter' && document.getElementById('modal').classList.contains('sh')) addItem();
-});
-
-/* ============== CHARTS ============== */
-function initCharts(){
-  if(typeof Chart === 'undefined') return;
-  const tc = 'rgba(255,255,255,.4)', gc = 'rgba(255,255,255,.04)';
-  if(window.c1) window.c1.destroy();
-  const v = [986,815,578,690,1184,513,619,870,605,431,333,2104,538,338,325,351,312,488,449,550];
-  const cl = v.map(x => x>1000 ? 'rgba(255,107,53,.75)' : x>700 ? 'rgba(240,200,8,.55)' : x>500 ? 'rgba(34,197,94,.45)' : 'rgba(255,255,255,.1)');
-  window.c1 = new Chart(document.getElementById('cV'),{
-    type:'bar',
-    data:{labels:v.map((_,i)=>i+1), datasets:[{data:v, backgroundColor:cl, borderRadius:3, barPercentage:.7}]},
-    options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{titleFont:{family:'DM Sans'}, bodyFont:{family:'DM Sans'}}}, scales:{y:{grid:{color:gc}, ticks:{color:tc, font:{size:9, family:'DM Sans'}}}, x:{grid:{display:false}, ticks:{color:tc, font:{size:8, family:'DM Sans'}}}}}
-  });
-  if(window.c3) window.c3.destroy();
-  // dynamic May count from state
-  const mayCount = Object.values(state.calEvents).reduce((a,arr)=>a+arr.length,0);
-  window.c3 = new Chart(document.getElementById('cM'),{
-    type:'bar',
-    data:{labels:['Feb','Mar','Apr','Mag'], datasets:[
-      {label:'Pubblicati', data:[8,6,7, mayCount], backgroundColor:'rgba(255,107,53,.55)', borderRadius:5, barPercentage:.45},
-      {label:'Target',     data:[8,8,8,8],         backgroundColor:'rgba(255,255,255,.08)', borderRadius:5, barPercentage:.45}
-    ]},
-    options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:tc, font:{size:9, family:'DM Sans'}, usePointStyle:true, pointStyleWidth:6}}}, scales:{y:{max:12, grid:{color:gc}, ticks:{color:tc, font:{size:9, family:'DM Sans'}}}, x:{grid:{display:false}, ticks:{color:tc, font:{size:10, family:'DM Sans'}}}}}
-  });
-}
-
-/* ============== INIT ============== */
-function renderAll(){
-  renderTodo();
-  renderCountdown();
-  buildCal();
-  renderRoadmap();
-}
-
-updateCD();
-setInterval(updateCD, 60*60*1000); // refresh hourly
-renderAll();
-window.addEventListener('load', ()=>{
-  requestAnimationFrame(()=>requestAnimationFrame(initCharts));
-});
-window.addEventListener('resize', ()=>{ closeP(); });
-</script>
-</body>
-</html>
